@@ -1,0 +1,5 @@
+# app/core.py
+
+SECRET_KEY = "MyS3cret"
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
