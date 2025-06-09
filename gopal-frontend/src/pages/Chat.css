@@ -1,0 +1,36 @@
+.chat-container {
+  display: flex;
+  height: 90vh;
+  border: 1px solid #ccc;
+}
+
+.friend-list {
+  width: 250px;
+  border-right: 1px solid #ddd;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+}
+
+.friend-item {
+  padding: 0.75rem;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+  transition: background 0.3s;
+}
+
+.friend-item:hover {
+  background-color: #e0e0e0;
+}
+
+.friend-item.active {
+  background-color: #d0d0ff;
+  font-weight: bold;
+}
+
+.chat-window {
+  flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+}
