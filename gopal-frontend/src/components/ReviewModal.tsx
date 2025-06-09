@@ -48,12 +48,13 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ location, token, onClose }) =
     setIsSubmitting(true);
 
     const payload = {
-      checkin_id: location.id,
+      checkin_id: String(location.id),
       rating: newRating,
       comment: newComment,
     };
 
     try {
+      console.log(payload);
       await axiosInstance.post("/location_reviews", payload);
       setNewComment("");
       setNewRating(5);
@@ -71,7 +72,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ location, token, onClose }) =
   }, [location.id]);
 
   useEffect(() => {
-  console.log("▶️ 被點擊的 userId:", selectedUserId);
+  console.log("被點擊的 userId:", selectedUserId);
 }, [selectedUserId]);
 
   return (
