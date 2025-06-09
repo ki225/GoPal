@@ -4,3 +4,8 @@ sqlalchemy
 databases 
 mysql-connector-python 
 alembic
+aiomysql
+"pydantic[email]"
+python-jose
+passlib
+python-dotenv

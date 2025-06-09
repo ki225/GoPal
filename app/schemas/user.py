@@ -17,3 +17,6 @@ class UserProfile(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+class FriendRequest(BaseModel):
+    target_user_id: str

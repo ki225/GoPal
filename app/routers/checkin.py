@@ -32,6 +32,6 @@ async def create_checkin(data: CheckInCreate, current_user: UserProfile = Depend
 @router.get("/checkins")
 async def list_checkins(current_user: UserProfile = Depends(get_current_user)):
     query = checkins.select().where(
-        (checkins.c.is_public == True) | (checkins.c.user_id == str(current_user.id))
+        (checkins.c.visibility == "public") | (checkins.c.user_id == str(current_user.id))
     )
     return await database.fetch_all(query)

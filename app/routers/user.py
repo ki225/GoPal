@@ -3,7 +3,7 @@ from fastapi import Request
 from typing import List
 from uuid import uuid4, UUID
 from app.database import database
-from app.schemas.user import UserRegister, UserProfile, UserLogin
+from app.schemas.user import UserRegister, UserProfile, UserLogin, FriendRequest
 from app.models import users
 from passlib.context import CryptContext
 from app.utils.jwt import create_access_token, verify_token
@@ -12,28 +12,42 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from app.core import SECRET_KEY, ALGORITHM
 import logging
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
-def get_current_user(request: Request):
+async def get_current_user(request: Request) -> UserProfile:
     auth_header = request.headers.get("Authorization")
     if not auth_header or not auth_header.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="缺少或錯誤的 Authorization header")
 
     token = auth_header[len("Bearer "):]
-    print("後端收到 token:", token)
 
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=401, detail="Token 無效")
-        return UserProfile(id=user_id)
+
+        query = users.select().where(users.c.id == user_id)
+        user_record = await database.fetch_one(query)
+        if not user_record:
+            raise HTTPException(status_code=404, detail="使用者不存在")
+
+        return UserProfile(
+            id=user_record["id"],
+            name=user_record["name"],
+            email=user_record["email"],
+            travel_preferences=user_record["travel_preferences"].split(",") if user_record["travel_preferences"] else []
+        )
+
     except JWTError as e:
-        print("JWT 錯誤:", str(e))
         raise HTTPException(status_code=401, detail="Token 驗證失敗")
 
 @router.get("/all")
@@ -66,6 +80,43 @@ async def list_friends(current_user: UserProfile = Depends(get_current_user)):
         }
         for row in user_rows
     ]
+
+@router.get("/{user_id}", response_model=UserProfile)
+async def get_user_by_id(user_id: str, current_user: dict = Depends(get_current_user)):
+    query = users.select().where(users.c.id == user_id)
+    user = await database.fetch_one(query)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {
+        "id": user["id"],
+        "name": user["name"],
+        "email": user["email"],
+        "travel_preferences": user["travel_preferences"].split(",") if user["travel_preferences"] else []
+    }
+
+@router.post("/friends/add")
+async def add_friend(req: FriendRequest, current_user: dict = Depends(get_current_user)):
+    friend_id = req.target_user_id
+    if friend_id == current_user.id:
+        raise HTTPException(status_code=400, detail="不能加自己為好友")
+
+    query = matches.select().where(
+        ((matches.c.user_id == current_user.id) & (matches.c.matched_user_id == friend_id)) |
+        ((matches.c.user_id == friend_id) & (matches.c.matched_user_id == current_user.id))
+    )
+    existing = await database.fetch_one(query)
+    if existing:
+        return {"message": "已經是好友"}
+
+    match_id = str(uuid4())
+    insert_query = matches.insert().values(
+        match_id=match_id,
+        user_id=current_user.id,
+        matched_user_id=friend_id
+    )
+    await database.execute(insert_query)
+    return {"message": "好友已新增"}
+
 
 @router.post("/login")
 async def login(user: UserLogin):

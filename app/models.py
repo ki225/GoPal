@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, String, MetaData, Date, Integer, Text, TIMESTAMP, Boolean, DateTime, JSON
+from sqlalchemy import Table, Column, String, MetaData, Date, Integer, Text, TIMESTAMP, Boolean, DateTime, JSON, Float, Enum, DateTime, ForeignKey
 from sqlalchemy.dialects.mysql import CHAR
 from sqlalchemy.sql import func
 
@@ -72,11 +72,11 @@ location_reviews = Table(
 checkins = Table(
     "checkins",
     metadata,
-    Column("id", String, primary_key=True),
-    Column("user_id", String),
-    Column("location_name", String),
-    Column("coordinates", JSON),
-    Column("description", String),
-    Column("is_public", Boolean),
-    Column("created_at", DateTime, server_default=func.now())
+    Column("id", String(36), primary_key=True),
+    Column("user_id", String(36), ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
+    Column("location_name", String(255), nullable=False),
+    Column("latitude", Float, nullable=False),
+    Column("longitude", Float, nullable=False),
+    Column("timestamp", DateTime, nullable=False, server_default=func.now()),
+    Column("visibility", Enum("public", "private"), default="public")
 )

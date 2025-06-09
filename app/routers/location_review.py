@@ -40,6 +40,7 @@ async def get_reviews_for_checkin(checkin_id: str):
     j = join(location_reviews, users, location_reviews.c.reviewer_id == users.c.id)
     query = select(
         location_reviews.c.id,
+        location_reviews.c.reviewer_id,
         location_reviews.c.comment,
         location_reviews.c.rating,
         location_reviews.c.created_at,
