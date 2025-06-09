@@ -1,0 +1,62 @@
+.usb-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3); /* 半透明黑背景 */
+  z-index: 999; /* 高於 modal */
+}
+
+.usb-sidebar {
+  position: fixed;
+  top: 0;
+  right: -400px; /* 起始在畫面外 */
+  width: 350px;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 1.5rem;
+  overflow-y: auto;
+  transition: right 0.3s ease-in-out;
+}
+
+/* 當 sidebar active 時滑入 */
+.usb-sidebar.active {
+  right: 0;
+}
+
+.usb-sidebar h3 {
+  margin-top: 0;
+}
+
+.usb-sidebar button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.usb-sidebar button {
+  padding: 0.6rem 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 1rem;
+}
+
+.usb-sidebar button:hover {
+  background-color: #0056b3;
+}
+
+.usb-sidebar button:active {
+  background-color: #004299;
+}

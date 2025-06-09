@@ -1,0 +1,75 @@
+.cw-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* border-left: 1px solid #ddd; */
+  background-color: #ffffff;
+}
+
+.cw-header {
+  padding: 12px;
+  font-weight: bold;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+}
+
+.cw-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.cw-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #ccc;
+  background-color: white;
+}
+
+.cw-input input {
+  flex: 1;
+  padding: 8px;
+  font-size: 1rem;
+}
+
+.cw-input button {
+  padding: 8px 16px;
+  margin-left: 8px;
+}
+
+.cw-message {
+  margin-bottom: 10px;
+}
+
+.cw-sent {
+  text-align: right;
+}
+
+.cw-received {
+  text-align: left;
+}
+
+.cw-sent .cw-bubble {
+  background-color: #4a90e2;
+  color: white;
+  align-self: flex-end;
+}
+
+.cw-received .cw-bubble {
+  background-color: #e5e5ea;
+  color: black;
+  align-self: flex-start;
+}
+
+.cw-bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background-color: #e1f5fe;
+}
+
+.cw-time {
+  font-size: 0.75rem;
+  color: #999;
+}
