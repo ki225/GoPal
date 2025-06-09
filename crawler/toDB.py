@@ -9,8 +9,7 @@ DATABASE_USERNAME=os.getenv("DATABASE_USERNAME")
 DATABASE_SECRET=os.getenv("DATABASE_SECRET")
 DATABASE_NAME=os.getenv("DATABASE_NAME")
 
-
-# 建立連線
+# connection
 conn = pymysql.connect(
     host='localhost',
     user=DATABASE_USERNAME,
@@ -20,10 +19,12 @@ conn = pymysql.connect(
 )
 cursor = conn.cursor()
 
-# 讀取 CSV 並寫入資料表
+# read CSV and write into table
 with open('./cafes.csv', newline='', encoding='utf-8-sig') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
+        if row['lat'] == 'N/A' or row['lng'] == 'N/A':
+            continue
         print(row['name'])
         cursor.execute("""
             INSERT INTO cafes (name, rating, reviews, img, lat, lng, map_link)
