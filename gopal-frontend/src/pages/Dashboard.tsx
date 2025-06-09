@@ -27,7 +27,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2>歡迎來到旅伴媒合 Dashboard</h2>
+      <h2>GoPal Dashboard</h2>
       <MapView token={token} />
     </div>
   );

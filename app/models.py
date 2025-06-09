@@ -80,3 +80,16 @@ checkins = Table(
     Column("timestamp", DateTime, nullable=False, server_default=func.now()),
     Column("visibility", Enum("public", "private"), default="public")
 )
+
+cafes = Table(
+    "cafes",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("name", String(255), nullable=False),
+    Column("rating", String(20)),
+    Column("reviews", Integer),
+    Column("img", Text),
+    Column("lat", Float, nullable=False),
+    Column("lng", Float, nullable=False),
+    Column("map_link", Text),
+)

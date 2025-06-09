@@ -18,15 +18,16 @@ interface CheckinData {
   description: string;
 }
 
-const staticLocations: {
-    id: string;
-    name: string;
-    lat: number;
-    lng: number;
-}[] = [
-    { id: "test-1", name: "星巴克 101", lat: 25.033964, lng: 121.564472 },
-    { id: "test-2", name: "咖啡 Roaster", lat: 25.04181, lng: 121.54853 }
-];
+interface CafeData {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  rating: string;
+  reviews: number;
+  img: string;
+  map_link: string;
+}
 
 const MapView: React.FC<MapViewProps> = ({ token }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
@@ -35,52 +36,70 @@ const MapView: React.FC<MapViewProps> = ({ token }) => {
   const [selectedCoords, setSelectedCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<{ id: string, name: string } | null>(null);
   const [matchedLocation, setMatchedLocation] = useState<{ id: string; name: string } | null>(null);
-
+  const [cafes, setCafes] = useState<CafeData[]>([]);
+  
   const loadCheckins = async () => {
     const res = await axiosInstance.get("/checkins");
     setCheckins(res.data);
   };
 
+  const loadCafes = async () => {
+    const res = await axiosInstance.get("/cafes");
+    const cafeList: CafeData[] = res.data;
+    setCafes(cafeList);
+
+    cafeList.forEach((cafe) => {
+      new mapboxgl.Marker({ color: "brown" })
+        .setLngLat([cafe.lng, cafe.lat])
+        .setPopup(
+          new mapboxgl.Popup().setHTML(`
+            <strong>${cafe.name}</strong><br/>
+            ⭐ ${cafe.rating}｜評論數：${cafe.reviews}<br/>
+            <a href="${cafe.map_link}" target="_blank">查看地圖</a>
+          `)
+        )
+    });
+  };
+
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
-  useEffect(() => {
-    if (mapContainer.current && !mapRef.current) {
-        mapRef.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: "mapbox://styles/mapbox/streets-v11",
-        center: [121.5, 25.05],
-        zoom: 12,
-        });
+useEffect(() => {
+  if (!mapRef.current || !mapContainer.current) {
+    mapRef.current = new mapboxgl.Map({
+      container: mapContainer.current!,
+      style: "mapbox://styles/mapbox/streets-v11",
+      center: [121.5654, 25.0330],
+      zoom: 12,
+    });
 
-        mapRef.current.on("click", (e: mapboxgl.MapMouseEvent) => {
-            const clickedLat = e.lngLat.lat;
-            const clickedLng = e.lngLat.lng;
+    mapRef.current.on("load", () => {
+      loadCafes(); 
+      loadCheckins();
+    });
+  }
+}, []);
 
-            const found = staticLocations.find(
-                loc =>
-                Math.abs(loc.lat - clickedLat) < 0.0001 &&
-                Math.abs(loc.lng - clickedLng) < 0.0001
-            );
+// clicking map marker
+useEffect(() => {
+  if (!mapRef.current) return;
 
-            if (found) {
-                setSelectedLocation({ id: found.id, name: found.name });
-            } else {
-                setSelectedCoords({ lat: clickedLat, lng: clickedLng });
-                setMatchedLocation(null);
-            }
-            });
+  cafes.forEach((cafe) => {
+    const marker = new mapboxgl.Marker({ color: "brown" })
+      .setLngLat([cafe.lng, cafe.lat])
+      .setPopup(
+        new mapboxgl.Popup().setHTML(`
+          <strong>${cafe.name}</strong><br/>
+          ⭐ ${cafe.rating}｜評論數：${cafe.reviews}<br/>
+          <a href="${cafe.map_link}" target="_blank">查看地圖</a>
+        `)
+      )
+      .addTo(mapRef.current!); 
 
-        staticLocations.forEach(loc => {
-            const marker = new mapboxgl.Marker({ color: "blue" })
-                .setLngLat([loc.lng, loc.lat])
-                .addTo(mapRef.current!);
-
-            marker.getElement().addEventListener("click", () => {
-                setSelectedLocation({ id: loc.id, name: loc.name }); 
-            });
-        });
-    }
-  }, []);
+    marker.getElement().addEventListener("click", () => {
+      setSelectedLocation({ id: cafe.id, name: cafe.name }); // will trigger review show
+    });
+  });
+}, [cafes]);
 
   useEffect(() => {
     checkins.forEach((checkin) => {
@@ -93,7 +112,10 @@ const MapView: React.FC<MapViewProps> = ({ token }) => {
 
   useEffect(() => {
     loadCheckins();
+    loadCafes(); 
   }, []);
+
+  console.log(cafes);
 
   return (
     <div>
