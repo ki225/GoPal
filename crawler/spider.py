@@ -9,8 +9,7 @@ from selenium.common.exceptions import TimeoutException
 import json
 import os
 import csv
-
-
+from getCor import geocode_by_arcgis
 
 def check_and_go_back_if_login(driver):
     current_url = driver.current_url
@@ -120,18 +119,24 @@ while True:
             except Exception as e:
                 print("再次點擊失敗", e)
 
-        # 收集資料
         current_url = driver.current_url
-        latlng = ["N/A", "N/A"]
-        if "@" in current_url:
-            try:
-                latlng = current_url.split('@')[1].split(',')[:2]
-            except:
-                pass
 
         name = driver.find_element(By.CLASS_NAME, "DUwDvf").text if driver.find_elements(By.CLASS_NAME, "DUwDvf") else "N/A"
         rating = driver.find_element(By.CLASS_NAME, "F7nice").text if driver.find_elements(By.CLASS_NAME, "F7nice") else "N/A"
         reviews = driver.find_element(By.CLASS_NAME, "UY7F9").text.strip("()") if driver.find_elements(By.CLASS_NAME, "UY7F9") else "N/A"
+        addr_elements = driver.find_elements(By.CLASS_NAME, "Io6YTe")
+        addr = "N/A"
+        if len(addr_elements) >= 2:
+            addr = addr_elements[1].text.strip()
+            print("地址：", addr)
+        else:
+            print("找不到地址")
+        
+        lat, lng = "N/A", "N/A"
+        if addr != "N/A":
+            lat, lng = geocode_by_arcgis(addr)
+            print("eocoded 座標：", lat, lng)
+
         try:
             img = driver.find_element(By.CLASS_NAME, "aoRNLd").find_element(By.TAG_NAME, "img").get_attribute("src")
         except:
@@ -141,7 +146,7 @@ while True:
         print("店家名稱：", name)
         print("評價：", rating, "（", reviews, "則）")
         print("圖片：", img)
-        print("座標：", latlng)
+        print("座標：", lat, lng)
         print("Google Maps 連結：", current_url)
 
         data_list.append({
@@ -149,8 +154,8 @@ while True:
             "rating": rating,
             "reviews": reviews,
             "img": img,
-            "lat": latlng[0],
-            "lng": latlng[1],
+            "lat": lat,
+            "lng": lng,
             "map_link": current_url
         })
         visited_dict[title] = True
