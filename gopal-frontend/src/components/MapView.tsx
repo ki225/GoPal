@@ -6,8 +6,6 @@ import CheckInModal from "./CheckInModal";
 import axiosInstance from "../axiosInstance";
 import ReviewModal from "./ReviewModal";
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-
 interface MapViewProps {
   token: string;
 }
@@ -39,11 +37,11 @@ const MapView: React.FC<MapViewProps> = ({ token }) => {
   const [matchedLocation, setMatchedLocation] = useState<{ id: string; name: string } | null>(null);
 
   const loadCheckins = async () => {
-    const token = localStorage.getItem("token");
-  console.log("🔍 呼叫 /checkins 前的 token:", token);
     const res = await axiosInstance.get("/checkins");
     setCheckins(res.data);
   };
+
+  mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
   useEffect(() => {
     if (mapContainer.current && !mapRef.current) {
