@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from app.database import database
 from app.routers import user, match, message, plan, review, checkin, cafes
 from fastapi.middleware.cors import CORSMiddleware
@@ -6,6 +6,19 @@ from app.routers import location_review
 from app.chat_websocket import router as chat_ws_router
 
 app = FastAPI()
+
+@app.middleware("http")
+async def log_request(request: Request, call_next):
+    print(f"Incoming request: {request.method} {request.url}")
+    try:
+        body = await request.body()
+        print(f"Body: {body.decode()}")
+    except Exception as e:
+        print(f"Failed to read body: {e}")
+
+    response = await call_next(request)
+    print(f"Response status: {response.status_code}")
+    return response
 
 app.add_middleware(
     CORSMiddleware,
