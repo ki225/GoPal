@@ -53,7 +53,7 @@ cards = driver.find_elements(By.CSS_SELECTOR, "button.SMP2wb.fHEb6e")
 print(f"共找到 {len(cards)} 間店家")
 
 visited_dict = dict()
-visited_file = "visited.json"
+visited_file = "crawler/visited.json"
 
 if os.path.exists(visited_file):
     with open(visited_file, "r", encoding="utf-8") as f:
