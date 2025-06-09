@@ -5,10 +5,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import CheckInModal from "./CheckInModal";
 import axiosInstance from "../axiosInstance";
 import ReviewModal from "./ReviewModal";
-import dotenv from "dotenv";
-dotenv.config();
 
-mapboxgl.accessToken = process.env.VITE_MAPBOX_TOKEN;
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
 
 interface MapViewProps {
   token: string;
