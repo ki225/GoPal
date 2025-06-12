@@ -4,16 +4,16 @@ from typing import List
 from uuid import uuid4, UUID
 from app.database import database
 from app.schemas.user import UserRegister, UserProfile, UserLogin, FriendRequest
-from app.models import users
+from app.models import users, checkins, matches 
 from passlib.context import CryptContext
 from app.utils.jwt import create_access_token, verify_token
-from app.models import users, matches 
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from app.core import SECRET_KEY, ALGORITHM
 import logging
 from dotenv import load_dotenv
 import os
+from sqlalchemy import select, or_, and_
 
 load_dotenv()
 
@@ -94,15 +94,50 @@ async def get_user_by_id(user_id: str, current_user: dict = Depends(get_current_
         "travel_preferences": user["travel_preferences"].split(",") if user["travel_preferences"] else []
     }
 
-@router.post("/friends/add")
-async def add_friend(req: FriendRequest, current_user: dict = Depends(get_current_user)):
-    friend_id = req.target_user_id
-    if friend_id == current_user.id:
+@router.get("/{user_id}/friends")
+async def get_friends(user_id: str):
+    match_query = select(
+        matches.c.user_id,
+        matches.c.matched_user_id
+    ).where(
+        or_(
+            matches.c.user_id == user_id,
+            matches.c.matched_user_id == user_id
+        )
+    )
+
+    match_rows = await database.fetch_all(match_query)
+
+    friend_ids = {
+        row["matched_user_id"] if row["user_id"] == user_id else row["user_id"]
+        for row in match_rows
+    }
+
+    if not friend_ids:
+        return []
+
+    user_query = select(
+        users.c.id,
+        users.c.name,
+        users.c.avatar_url
+    ).where(users.c.id.in_(friend_ids))
+
+    friends = await database.fetch_all(user_query)
+    return friends
+
+@router.post("/{user_id}/friends/add")
+async def add_friend(user_id: str, req: FriendRequest, current_user: dict = Depends(get_current_user)):
+    if req.target_user_id == user_id:
         raise HTTPException(status_code=400, detail="不能加自己為好友")
 
+    if current_user["id"] != user_id:
+        raise HTTPException(status_code=403, detail="沒有權限新增他人好友")
+
     query = matches.select().where(
-        ((matches.c.user_id == current_user.id) & (matches.c.matched_user_id == friend_id)) |
-        ((matches.c.user_id == friend_id) & (matches.c.matched_user_id == current_user.id))
+        or_(
+            and_(matches.c.user_id == user_id, matches.c.matched_user_id == req.target_user_id),
+            and_(matches.c.user_id == req.target_user_id, matches.c.matched_user_id == user_id)
+        )
     )
     existing = await database.fetch_one(query)
     if existing:
@@ -111,8 +146,8 @@ async def add_friend(req: FriendRequest, current_user: dict = Depends(get_curren
     match_id = str(uuid4())
     insert_query = matches.insert().values(
         match_id=match_id,
-        user_id=current_user.id,
-        matched_user_id=friend_id
+        user_id=user_id,
+        matched_user_id=req.target_user_id
     )
     await database.execute(insert_query)
     return {"message": "好友已新增"}
@@ -177,4 +212,21 @@ async def list_users(current_user: UserProfile = Depends(get_current_user)):
             "email": row["email"]
         }
         for row in rows
+    ]
+
+@router.get("/{user_id}/checkins")
+async def show_my_checkins(user_id: str):
+    query = checkins.select().where(checkins.c.user_id == user_id)
+    results = await database.fetch_all(query)
+
+    return [
+        {
+            "id": row["id"],
+            "location_name": row["location_name"],
+            "timestamp": row["timestamp"],
+            "comment": row.get("comment"),  # 如果你未來有加入 comment 欄位
+            "lat": row["latitude"],
+            "lng": row["longitude"]
+        }
+        for row in results
     ]
