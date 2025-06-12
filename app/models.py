@@ -12,6 +12,8 @@ users = Table(
     Column("password", String(255)),
     Column("name", String(100)),
     Column("travel_preferences", Text),
+    Column("avatar_url", String(255)),
+    Column("bio", Text)
 )
 
 matches = Table(
@@ -23,6 +25,7 @@ matches = Table(
     Column("destination", String(255)),
     Column("start_date", Date),
     Column("end_date", Date),
+    Column("status", CHAR(36))
 )
 
 messages = Table(
