@@ -27,6 +27,9 @@ const DashboardSideBar: React.FC = () => {
           <li style={{ marginBottom: "1rem" }}>
             <button onClick={handleLogout}>登出</button>
           </li>
+          <li style={{ marginBottom: "1rem" }}>
+            <button onClick={() => navigate("/userPage")}>個人頁面</button>
+          </li>
         </ul>
       </div>
 
