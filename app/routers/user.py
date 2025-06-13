@@ -224,7 +224,7 @@ async def show_my_checkins(user_id: str):
             "id": row["id"],
             "location_name": row["location_name"],
             "timestamp": row["timestamp"],
-            "comment": row.get("comment"),  # 如果你未來有加入 comment 欄位
+            "comment": row.get("comment"),  
             "lat": row["latitude"],
             "lng": row["longitude"]
         }
