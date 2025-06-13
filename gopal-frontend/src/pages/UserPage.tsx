@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axiosInstance from "../axiosInstance";
 import MapView from "../components/MapView";
+import "./UserPage.css"; 
 
 interface UserProfileProps {
   userId: string;
@@ -27,6 +28,8 @@ interface CheckinPost {
   location_name: string;
   timestamp: string;
   comment?: string;
+  lat: number;
+  lng: number;
 }
 
 const UserPage: React.FC<UserProfileProps> = ({ token, userId }) => {
@@ -54,57 +57,62 @@ const UserPage: React.FC<UserProfileProps> = ({ token, userId }) => {
     alert("Profile edit not yet implemented.");
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return <div className="loading">Loading</div>;
 
   return (
-    <div className="p-4">
-      <div className="flex items-center gap-4 mb-6">
-        <img
-          src={user.avatar_url}
-          alt="Avatar"
-          className="w-24 h-24 rounded-full object-cover"
-        />
-        <div>
-          <h1 className="text-2xl font-semibold">{user.name}</h1>
-          <p className="text-gray-600">{user.bio || "No bio available."}</p>
-          <button
-            onClick={handleEditProfile}
-            className="mt-2 px-4 py-1 bg-blue-500 text-white rounded"
-          >
-            Edit Profile
-          </button>
+    <div className="user-page">
+      <div className="user-page-container">
+        <div className="profile-header">
+          <img
+            src={user.avatar_url || '/default-avatar.png'}
+            alt="Avatar"
+            className="profile-avatar"
+          />
+          <div className="profile-info">
+            <h1 className="profile-name">{user.name}</h1>
+            <p className="profile-bio">{user.bio || "No bio available."}</p>
+            <button
+              onClick={handleEditProfile}
+              className="edit-profile-btn"
+            >
+              Edit Profile
+            </button>
+          </div>
         </div>
-      </div>
 
-      <h2 className="text-xl font-bold mb-2">Your Check-in Map</h2>
-      <MapView token={token} />
+        <h2 className="section-header">Your Check-in Map</h2>
+        <div className="map-container">
+          <MapView token={token} checkins={checkinPosts} />
+        </div>
 
-      <h2 className="text-xl font-bold mt-8 mb-2">Friends</h2>
-      <div className="flex flex-wrap gap-4">
-        {friends.map((friend) => (
-          <div key={friend.id} className="w-32 text-center">
-            <img
-              src={friend.avatar_url}
-              alt={friend.name}
-              className="w-16 h-16 rounded-full mx-auto"
-            />
-            <p className="text-sm mt-1">{friend.name}</p>
-          </div>
-        ))}
-      </div>
+        <h2 className="section-header">Friends</h2>
+        <div className="friends-grid">
+          {friends.map((friend) => (
+            <div key={friend.id} className="friend-card">
+              <img
+                src={friend.avatar_url || '/default-avatar.png'}
+                alt={friend.name}
+                className="friend-avatar"
+              />
+              <p className="friend-name">{friend.name}</p>
+            </div>
+          ))}
+        </div>
 
-      <h2 className="text-xl font-bold mt-8 mb-2">Your Check-in Posts</h2>
-      <div className="space-y-4">
-        {checkinPosts.map((post) => (
-          <div
-            key={post.id}
-            className="border p-4 rounded shadow bg-white"
-          >
-            <h3 className="font-semibold">📍 {post.location_name}</h3>
-            <p className="text-sm text-gray-500">{new Date(post.timestamp).toLocaleString()}</p>
-            {post.comment && <p className="mt-2">{post.comment}</p>}
-          </div>
-        ))}
+        <h2 className="section-header">Your Check-in Posts</h2>
+        <div className="checkin-posts">
+          {checkinPosts.map((post) => (
+            <div key={post.id} className="checkin-post">
+              <h3 className="checkin-location">{post.location_name}</h3>
+              <p className="checkin-timestamp">
+                {new Date(post.timestamp).toLocaleString()}
+              </p>
+              {post.comment && (
+                <p className="checkin-comment">{post.comment}</p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
