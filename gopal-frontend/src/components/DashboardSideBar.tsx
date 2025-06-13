@@ -59,7 +59,7 @@ const DashboardSideBar: React.FC = () => {
             </button>
           </li>
           
-          {/* 咖啡菜單 */}
+          {/* 訊息 */}
           <li 
             className={`nav-item ${isCollapsed ? 'collapsed-tooltip' : ''}`}
             data-tooltip="私訊"
