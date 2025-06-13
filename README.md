@@ -90,7 +90,9 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    travel_preferences TEXT
+    travel_preferences TEXT,
+    avatar_url VARCHAR(255), 
+    bio TEXT
 );
 
 CREATE TABLE matches (
@@ -99,7 +101,8 @@ CREATE TABLE matches (
     matched_user_id CHAR(36) NOT NULL,
     destination VARCHAR(255),
     start_date DATE,
-    end_date DATE
+    end_date DATE,
+    status CHAR(36)
 );
 
 CREATE TABLE messages (
@@ -146,7 +149,9 @@ CREATE TABLE checkins (
     longitude DOUBLE NOT NULL,
     timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     visibility ENUM('public', 'private') DEFAULT 'public',
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    cafe_id CHAR(36),
+    comment VARCHAR(255)
 );
 
 CREATE TABLE cafes (
@@ -171,7 +176,7 @@ sudo a2enmod proxy_wstunnel
 sudo a2enmod rewrite
 sudo systemctl restart apache2
 ```
-充新啟動
+重新啟動
 ```
 sudo systemctl restart apache2
 ```
