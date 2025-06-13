@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
 import DashboardSideBar from "./components/DashboardSideBar";
+import UserPage  from "./pages/UserPage";
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -72,6 +73,15 @@ const App: React.FC = () => {
             }
           />
         </Route>
+
+        <Route
+            path="userPage"
+            element={
+              <UserPage 
+                token={token}
+                userId={userId}
+              />}
+          />
 
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
