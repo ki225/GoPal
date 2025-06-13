@@ -47,7 +47,6 @@ const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" />} />
 
         <Route path="/login" element={<Navigate to="/dashboard" />} />
 
@@ -72,16 +71,16 @@ const App: React.FC = () => {
               />
             }
           />
-        </Route>
-
-        <Route
+          <Route
             path="userPage"
             element={
               <UserPage 
                 token={token}
                 userId={userId}
-              />}
+              />
+            }
           />
+        </Route>
 
         <Route path="*" element={<Navigate to="/dashboard" />} />
       </Routes>
