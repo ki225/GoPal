@@ -231,7 +231,7 @@
 .main-content {
   flex: 1;
   padding: 2rem;
-  overflow-y: auto;
+  overflow-y: hidden;
   position: relative;
   background: #FFFFFF;
   border-radius: 20px;
