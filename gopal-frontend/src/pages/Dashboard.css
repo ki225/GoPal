@@ -57,7 +57,16 @@
   overflow-y: auto;
   transition: transform 0.3s ease;
   color: var(--dark-text);
+  display: flex;  /* 添加 flex 布局 */
+  flex-direction: column; 
   background-image: linear-gradient(to bottom, var(--beige), var(--dark-beige));
+}
+
+.filter-content-scrollable {
+  flex: 1;  /* 自動填充可用空間 */
+  overflow-y: auto;  /* 區域內容可滑動 */
+  padding-right: 5px;  /* 為滑動條留出空間 */
+  margin-bottom: 10px;  /* 與底部按鈕保持距離 */
 }
 
 .filter-section.hidden {
@@ -165,6 +174,24 @@
   margin-top: 30px;
   padding-top: 16px;
   border-top: 1px solid var(--dark-sand);
+  position: relative; 
+  z-index: 2; 
+  margin-bottom: 20px; 
+}
+
+/* 固定底部按鈕 */
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-sand);
+  position: sticky;  /* 固定在容器底部 */
+  bottom: 0;  /* 底部對齊 */
+  background-color: var(--beige);  /* 確保背景色與面板一致 */
+  padding-bottom: 10px;  /* 底部內邊距 */
+  width: 100%;  /* 寬度填滿容器 */
 }
 
 /* 星期幾篩選樣式 */

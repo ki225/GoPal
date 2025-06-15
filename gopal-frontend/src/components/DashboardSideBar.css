@@ -230,8 +230,7 @@
 /* 主內容區域 */
 .main-content {
   flex: 1;
-  padding: 2rem;
-  overflow-y: hidden;
+  overflow: hidden;
   position: relative;
   background: #FFFFFF;
   border-radius: 20px;

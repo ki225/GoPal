@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MapView from "../components/MapView";
-import { Slider, Switch, Radio, Button, Collapse, Checkbox } from 'antd';
+import { Slider, Switch, Radio, Button, Collapse, Checkbox, message } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
+import axios from 'axios';
 import 'antd/dist/reset.css';
 import './Dashboard.css';
 
@@ -51,6 +52,10 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
     wifi: 'strong',
     toilet: true
   });
+
+  const [cafes, setCafes] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  
   
   const [isFilterVisible, setIsFilterVisible] = useState(false); // 默認收起篩選欄
 
@@ -61,6 +66,71 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
     }));
   };
 
+  const loadCafes = async (withFilters = false) => {
+    setLoading(true);
+    
+    try {
+      let response;
+      
+      if (withFilters) {
+        // 使用篩選條件
+        const filterData = {
+          business_hours_start: filters.businessHours[0],
+          business_hours_end: filters.businessHours[1],
+          open_days: filters.openDays,
+          price_min: filters.price[0],
+          price_max: filters.price[1],
+          lighting: filters.lighting,
+          no_time_limit: filters.noTimeLimit,
+          power_outlets: filters.powerOutlets,
+          noise_level: filters.noiseLevel,
+          payment_methods: filters.paymentMethods,
+          wifi_strength: filters.wifi,
+          has_toilet: filters.toilet
+        };
+        
+        response = await axios.post(
+          `${process.env.REACT_APP_API_URL}/cafes/filter`, 
+          filterData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+      } else {
+        // 無篩選條件
+        response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/cafes`, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        );
+      }
+      
+      setCafes(response.data);
+    } catch (error) {
+      console.error("Failed to load cafes:", error);
+      message.error("無法載入咖啡廳資料");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  // 初次加載時獲取所有咖啡廳
+  useEffect(() => {
+    loadCafes();
+  }, []);
+  
+  // 應用篩選條件
+  const applyFilters = () => {
+    loadCafes(true);
+    toggleFilter(); // 應用篩選後隱藏篩選面板
+  };
+  
+  // 修改重置篩選，添加重新載入資料
   const resetFilters = () => {
     setFilters({
       businessHours: [9, 21],
@@ -74,6 +144,8 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
       wifi: 'strong',
       toilet: true
     });
+    // 重置後也重新載入所有咖啡廳
+    loadCafes();
   };
 
   const formatTime = (time: number | undefined) => {
@@ -96,7 +168,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
   const todayValue = today === 0 ? 'sunday' : ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][today - 1];
 
   return (
-    <div className="dashboard-container overflow: hidden;">
+    <div className="dashboard-container">
       {/* 篩選面板 */}
       <div className={`filter-section ${isFilterVisible ? 'visible' : 'hidden'}`}>
         <div className="filter-header">
@@ -299,13 +371,25 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
         
         <div className="filter-actions">
           <Button onClick={resetFilters} className="earth-tone-btn">重置篩選</Button>
-          <Button type="primary" className="earth-tone-btn apply-btn">套用篩選</Button>
+          <Button 
+            type="primary" 
+            className="earth-tone-btn apply-btn" 
+            onClick={applyFilters}
+            loading={loading}
+          >
+            套用篩選
+          </Button>
         </div>
       </div>
       
       {/* 地圖區域 */}
       <div className={`map-section ${isFilterVisible ? 'with-filter' : 'full-width'}`}>
-        <MapView token={token} userId={userId} />
+        <MapView 
+          token={token} 
+          userId={userId} 
+          cafes={cafes} 
+          loading={loading}
+        />
       </div>
       
       {/* 漂浮的篩選按鈕 */}
