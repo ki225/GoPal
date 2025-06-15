@@ -1,9 +1,9 @@
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Depends, Header, File, UploadFile, Form
 from fastapi import Request
 from typing import List
 from uuid import uuid4, UUID
 from app.database import database
-from app.schemas.user import UserRegister, UserProfile, UserLogin, FriendRequest
+from app.schemas.user import UserRegister, UserProfile, UserLogin, FriendRequest, CheckInCreate
 from app.models import users, checkins, matches 
 from passlib.context import CryptContext
 from app.utils.jwt import create_access_token, verify_token
@@ -14,13 +14,16 @@ import logging
 from dotenv import load_dotenv
 import os
 from sqlalchemy import select, or_, and_
+from typing import List, Optional
+import shutil
+import aiofiles
+from datetime import datetime
 
 load_dotenv()
 
 router = APIRouter()
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 
 async def get_current_user(request: Request) -> UserProfile:
     auth_header = request.headers.get("Authorization")
@@ -52,7 +55,6 @@ async def get_current_user(request: Request) -> UserProfile:
 
 @router.get("/all")
 async def list_friends(current_user: UserProfile = Depends(get_current_user)):
-    # 找出與當前使用者有 match 關係的 user id（不論誰是 initiator）
     query = matches.select().where(
         (matches.c.user_id == str(current_user.id)) | 
         (matches.c.matched_user_id == str(current_user.id))
@@ -215,8 +217,17 @@ async def list_users(current_user: UserProfile = Depends(get_current_user)):
     ]
 
 @router.get("/{user_id}/checkins")
-async def show_my_checkins(user_id: str):
-    query = checkins.select().where(checkins.c.user_id == user_id)
+async def show_my_checkins(user_id: str, current_user: Optional[UserProfile] = Depends(get_current_user)):
+    if str(current_user.id) == user_id:
+        query = checkins.select().where(checkins.c.user_id == user_id)
+    else:
+        query = checkins.select().where(
+            and_(
+                checkins.c.user_id == user_id,
+                checkins.c.visibility == "public"
+            )
+        )
+    
     results = await database.fetch_all(query)
 
     return [
@@ -224,9 +235,11 @@ async def show_my_checkins(user_id: str):
             "id": row["id"],
             "location_name": row["location_name"],
             "timestamp": row["timestamp"],
-            "comment": row.get("comment"),  
+            "comment": row["comment"],  
             "lat": row["latitude"],
-            "lng": row["longitude"]
+            "lng": row["longitude"],
+            "visibility": row["visibility"],
+            "has_image": row["image_data"] is not None,
         }
         for row in results
     ]
