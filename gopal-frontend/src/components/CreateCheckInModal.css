@@ -1,0 +1,390 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.create-checkin-modal {
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #C19471 0%, #8B5A2B 100%);
+  color: #ECDFD3;
+  border-bottom: 1px solid rgba(236, 223, 211, 0.2);
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: #ECDFD3;
+  font-size: 1.8rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-body {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* 表單樣式 */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #5E3A1A;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d0c0b0;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* 地點選擇 */
+.location-section {
+  margin-bottom: 15px;
+}
+
+.location-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #F5EFE7;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(193, 148, 113, 0.3);
+  flex: 1;
+}
+
+.pick-location-btn, .change-location-btn {
+  padding: 8px 12px;
+  background-color: #F5EFE7;
+  border: 1px solid #C19471;
+  color: #5E3A1A;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.pick-location-btn {
+  width: 100%;
+}
+
+.pick-location-btn:hover, .change-location-btn:hover {
+  background-color: #ECDFD3;
+}
+
+/* 地圖選擇器 */
+.location-map-container {
+  position: relative;
+  margin-top: 15px;
+  border: 1px solid #d0c0b0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  height: 400px;
+  display: flex;
+}
+
+.map-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(92, 58, 26, 0.8);
+  color: white;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.map-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.close-map-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.location-map {
+  flex: 2;
+  height: 100%;
+}
+
+.cafe-list {
+  flex: 1;
+  background: white;
+  border-left: 1px solid #d0c0b0;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.cafe-list h4 {
+  margin-top: 0;
+  color: #5E3A1A;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.cafe-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cafe-list li {
+  padding: 10px;
+  border-bottom: 1px solid rgba(193, 148, 113, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cafe-list li:hover {
+  background-color: rgba(193, 148, 113, 0.1);
+}
+
+.cafe-list li.selected {
+  background-color: rgba(193, 148, 113, 0.2);
+  font-weight: 500;
+  color: #5E3A1A;
+}
+
+.loading-cafes {
+  text-align: center;
+  padding: 20px;
+  color: #8B5A2B;
+}
+
+/* 好友選擇 */
+.friends-section {
+  margin-bottom: 15px;
+}
+
+.friends-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.friend-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #F5EFE7;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.friend-item:hover {
+  background-color: rgba(193, 148, 113, 0.2);
+}
+
+.friend-item.selected {
+  background-color: #C19471;
+  color: white;
+}
+
+.friend-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #8B5A2B;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.friend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.loading-friends, .no-friends {
+  padding: 15px;
+  text-align: center;
+  color: #8B5A2B;
+  font-style: italic;
+}
+
+/* 可見性選項 */
+.visibility-options .radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/* 發布按鈕 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #8B5A2B;
+  color: #8B5A2B;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #C19471, #8B5A2B);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(126, 91, 61, 0.3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .location-map-container {
+    flex-direction: column;
+    height: 500px;
+  }
+  
+  .location-map {
+    height: 300px;
+  }
+  
+  .cafe-list {
+    border-left: none;
+    border-top: 1px solid #d0c0b0;
+  }
+  
+  .form-actions {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .form-actions button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+  
+  .create-checkin-modal {
+    width: 100%;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.3rem;
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .form-actions button {
+    width: 100%;
+  }
+  
+  .friend-selection {
+    gap: 5px;
+  }
+  
+  .friend-item {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+}
+
