@@ -28,7 +28,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
   return (
     <div style={{ padding: "2rem" }}>
       <h2>GoPal Dashboard</h2>
-      <MapView token={token} />
+      <MapView token={token} userId={userId} />
     </div>
   );
 };

@@ -46,44 +46,38 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <Routes>
-
-        <Route path="/login" element={<Navigate to="/dashboard" />} />
-
-        <Route path="/" element={<DashboardSideBar />}>
-          <Route
-            path="dashboard"
-            element={
-              <Dashboard
-                token={token}
-                userId={userId}
-                setReceiverId={setReceiverId}
-              />
-            }
-          />
-          <Route
-            path="chat"
-            element={
-              <Chat
-                token={token}
-                userId={userId}
-                receiverId={receiverId}
-              />
-            }
-          />
-          <Route
-            path="userPage"
-            element={
-              <UserPage 
-                token={token}
-                userId={userId}
-              />
-            }
-          />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/dashboard" />} />
-      </Routes>
+        <Routes>
+          <Route path="/login" element={<Navigate to="/dashboard" />} />
+          <Route path="/" element={<DashboardSideBar />}>
+            <Route
+              path="dashboard"
+              element={
+                <Dashboard
+                  token={token}
+                  userId={userId}
+                  setReceiverId={setReceiverId}
+                />
+              }
+            />
+            <Route
+              path="chat"
+              element={
+                <Chat
+                  token={token}
+                  userId={userId}
+                  receiverId={receiverId}
+                />
+              }
+            />
+            <Route
+              path="userPage"
+              element={
+                <UserPage />
+              }
+            />
+          </Route>
+          <Route path="*" element={<Navigate to="/dashboard" />} />
+        </Routes>
     </Router>
   );
 };
