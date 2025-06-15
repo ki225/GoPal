@@ -334,7 +334,6 @@
   font-weight: 500;
 }
 
-/* Checkbox 組件 */
 .earth-tone-checkbox .checkbox-item {
   display: flex;
   align-items: center;
@@ -352,7 +351,6 @@
   color: var(--dark-text);
 }
 
-/* 按鈕 */
 .earth-tone-btn {
   border-color: var(--dark-sand) !important;
   color: var(--primary-brown) !important;
@@ -376,14 +374,12 @@
   border-color: var(--primary-brown-hover) !important;
 }
 
-/* 面板樣式 */
 .filter-panel {
   background-color: rgba(255, 255, 255, 0.5) !important;
   border-radius: 8px;
   margin-bottom: 12px;
 }
 
-/* 美化滾動條 */
 .filter-section::-webkit-scrollbar {
   width: 6px;
 }
@@ -402,7 +398,6 @@
   background-color: var(--light-brown);
 }
 
-/* 響應式調整 */
 @media (max-width: 768px) {
   .filter-section {
     width: 85%;
@@ -415,3 +410,55 @@
   }
 }
 
+.filter-content-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth; 
+}
+
+.filter-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 360px;
+  background-color: var(--beige);
+  background-image: linear-gradient(to bottom, var(--beige), var(--dark-beige));
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  color: var(--dark-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-sand);
+  background-color: var(--beige);
+  padding-bottom: 10px;
+  width: 100%;
+  z-index: 2;
+}
+
+.earth-tone-btn {
+  border-color: var(--dark-sand) !important;
+  color: var(--primary-brown) !important;
+  background-color: var(--cream) !important;
+  border-radius: 6px !important;
+  font-weight: 500;
+  min-width: 100px;
+  height: 36px;
+  line-height: 34px;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}

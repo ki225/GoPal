@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import MapView from "../components/MapView";
 import { Slider, Switch, Radio, Button, Collapse, Checkbox, message } from 'antd';
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import axiosInstance from "../axiosInstance";
 import 'antd/dist/reset.css';
 import './Dashboard.css';
+import axios from "axios";
+
 
 const { Panel } = Collapse;
 const { Group: RadioGroup } = Radio;
@@ -54,11 +56,10 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
   });
 
   const [cafes, setCafes] = useState<any[]>([]);
+  const [allCafes, setAllCafes] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
   
-  
-  const [isFilterVisible, setIsFilterVisible] = useState(false); // 默認收起篩選欄
-
   const handleFilterChange = (key: keyof FilterState, value: any) => {
     setFilters(prev => ({
       ...prev,
@@ -66,51 +67,15 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
     }));
   };
 
-  const loadCafes = async (withFilters = false) => {
+  const loadAllCafes = async () => {
     setLoading(true);
     
     try {
-      let response;
+      const res = await axiosInstance.get("/cafes");
       
-      if (withFilters) {
-        // 使用篩選條件
-        const filterData = {
-          business_hours_start: filters.businessHours[0],
-          business_hours_end: filters.businessHours[1],
-          open_days: filters.openDays,
-          price_min: filters.price[0],
-          price_max: filters.price[1],
-          lighting: filters.lighting,
-          no_time_limit: filters.noTimeLimit,
-          power_outlets: filters.powerOutlets,
-          noise_level: filters.noiseLevel,
-          payment_methods: filters.paymentMethods,
-          wifi_strength: filters.wifi,
-          has_toilet: filters.toilet
-        };
-        
-        response = await axios.post(
-          `${process.env.REACT_APP_API_URL}/cafes/filter`, 
-          filterData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-      } else {
-        // 無篩選條件
-        response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/cafes`, 
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        );
-      }
+      setAllCafes(res.data);
+      setCafes(res.data); 
       
-      setCafes(response.data);
     } catch (error) {
       console.error("Failed to load cafes:", error);
       message.error("無法載入咖啡廳資料");
@@ -118,19 +83,53 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
       setLoading(false);
     }
   };
+
+  const loadFilteredCafes = async () => {
+  setLoading(true);
+  
+  try {
+    const filterData = {
+      business_hours_start: filters.businessHours[0],
+      business_hours_end: filters.businessHours[1],
+      open_days: filters.openDays,
+      price_min: filters.price[0],
+      price_max: filters.price[1],
+      lighting: filters.lighting,
+      no_time_limit: filters.noTimeLimit,
+      power_outlets: filters.powerOutlets,
+      noise_level: filters.noiseLevel,
+      payment_methods: filters.paymentMethods,
+      wifi_strength: filters.wifi,
+      has_toilet: filters.toilet
+    };
+        
+    const response = await axiosInstance.post("/cafes/filter", filterData);
+    
+    setCafes(response.data);
+    message.success(`找到 ${response.data.length} 間符合條件的咖啡廳`);
+    
+  } catch (error) {
+    console.error("篩選咖啡廳時出錯:", error); // 詳細記錄錯誤
+    if (axios.isAxiosError(error) && error.response) {
+      console.error("錯誤詳情:", error.response.data); // 顯示伺服器返回的錯誤數據
+    }
+    message.error("篩選咖啡廳時出錯");
+  } finally {
+    setLoading(false);
+  }
+};
   
   // 初次加載時獲取所有咖啡廳
   useEffect(() => {
-    loadCafes();
+    loadAllCafes();
   }, []);
   
-  // 應用篩選條件
+  // 套用篩選條件
   const applyFilters = () => {
-    loadCafes(true);
-    toggleFilter(); // 應用篩選後隱藏篩選面板
+    loadFilteredCafes();
+    toggleFilter(); 
   };
   
-  // 修改重置篩選，添加重新載入資料
   const resetFilters = () => {
     setFilters({
       businessHours: [9, 21],
@@ -144,8 +143,9 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
       wifi: 'strong',
       toilet: true
     });
-    // 重置後也重新載入所有咖啡廳
-    loadCafes();
+
+    setCafes(allCafes);
+    message.info("已重置篩選條件");
   };
 
   const formatTime = (time: number | undefined) => {
@@ -163,8 +163,7 @@ const Dashboard: React.FC<DashboardProps> = ({ token, userId, setReceiverId }) =
     handleFilterChange('openDays', checkedValues as string[]);
   };
 
-  // 計算今天是星期幾，用於突出顯示
-  const today = new Date().getDay(); // 0-6 代表週日-週六
+  const today = new Date().getDay(); 
   const todayValue = today === 0 ? 'sunday' : ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'][today - 1];
 
   return (
