@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axiosInstance from "../axiosInstance";
-import ReviewModal from "./ReviewModal";
 import CheckInModal from '../components/CheckInModal';
+import './MapView.css';
+import "mapbox-gl/dist/mapbox-gl.css";
 
 interface SelectedLocation {
   id: string;
@@ -121,14 +122,14 @@ const MapView: React.FC<MapViewProps> = ({ token, userId, checkins }) => {
   }, [checkins, cafes]);
 
   return (
-    <div>
-      <div ref={mapContainer} style={{ width: "100%", height: "500px" }} />
+    <div className="mapview-container">
+      <div ref={mapContainer} className="full-height-map" />
       {showCheckInModal && selectedLocation && (
         <CheckInModal
           lat={selectedLocation.lat}
           lng={selectedLocation.lng}
           locationName={selectedLocation.name}
-          userId={userId} // 使用傳入的 userId
+          userId={userId} 
           onClose={() => setShowCheckInModal(false)}
           onSuccess={() => {
             setShowCheckInModal(false);
