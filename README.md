@@ -62,7 +62,20 @@ graph TD
 
   %% 爬蟲與資料庫互動
   D1 -->|定期寫入資料| C1
+```
 
+## How to start
+### 啟動前端
+```sh
+cd ./gopal-frontend/
+npm install
+npm run dev
+```
+
+### 啟動後端
+```sh
+pip install -r requirements.txt
+uvicorn app.main:app --host 127.0.0.1 --port 8000
 ```
 
 ### 啟用資料庫
@@ -80,91 +93,6 @@ sudo systemctl enable mysql
 CREATE DATABASE gopaldb CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 建立表在資料庫內
-```sql
--- 選擇資料庫
-USE gopaldb;
-
--- 建立表
-CREATE TABLE users (
-    id CHAR(36) PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    travel_preferences TEXT,
-    avatar_url VARCHAR(255), 
-    bio TEXT
-);
-
-CREATE TABLE matches (
-    match_id CHAR(36) PRIMARY KEY,
-    user_id CHAR(36) NOT NULL,
-    matched_user_id CHAR(36) NOT NULL,
-    destination VARCHAR(255),
-    start_date DATE,
-    end_date DATE,
-    status CHAR(36)
-);
-
-CREATE TABLE messages (
-    message_id CHAR(36) PRIMARY KEY,
-    sender_id CHAR(36) NOT NULL,
-    receiver_id CHAR(36) NOT NULL,
-    content TEXT NOT NULL,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE plans (
-    plan_id CHAR(36) PRIMARY KEY,
-    user_id CHAR(36) NOT NULL,
-    title VARCHAR(255),
-    destination VARCHAR(255),
-    start_date DATE,
-    end_date DATE,
-    description TEXT
-);
-
-CREATE TABLE reviews (
-    review_id CHAR(36) PRIMARY KEY,
-    reviewer_id CHAR(36) NOT NULL,
-    target_user_id CHAR(36) NOT NULL,
-    rating INT,
-    comment TEXT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE location_reviews (
-  id CHAR(36) PRIMARY KEY,
-  checkin_id VARCHAR(255),
-  reviewer_id VARCHAR(255),
-  rating INT,
-  comment TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE checkins (
-    id CHAR(36) PRIMARY KEY,
-    user_id CHAR(36) NOT NULL,
-    location_name VARCHAR(255) NOT NULL,
-    latitude DOUBLE NOT NULL,
-    longitude DOUBLE NOT NULL,
-    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    visibility ENUM('public', 'private') DEFAULT 'public',
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    cafe_id CHAR(36),
-    comment VARCHAR(255)
-);
-
-CREATE TABLE cafes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255),
-    rating VARCHAR(20),
-    reviews INT,
-    img TEXT,
-    lat DOUBLE,
-    lng DOUBLE,
-    map_link TEXT
-);
-```
 
 ### 啟用伺服器
 啟用必要模組
