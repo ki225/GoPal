@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DashboardSideBar from "./components/DashboardSideBar";
 import UserPage  from "./pages/UserPage";
 import UserProfilePage from './pages/UserProfilePage';
+import { ConfigProvider } from 'antd';
 
 const App: React.FC = () => {
   const [token, setToken] = useState<string | null>(null);
@@ -46,6 +47,15 @@ const App: React.FC = () => {
   }
 
   return (
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#8B6E4E',
+          colorPrimaryHover: '#7B5E3E',
+          colorPrimaryActive: '#6A4E2E',
+        },
+      }}
+    >
     <Router>
         <Routes>
           <Route path="/login" element={<Navigate to="/dashboard" />} />
@@ -86,6 +96,7 @@ const App: React.FC = () => {
           <Route path="*" element={<Navigate to="/dashboard" />} />
         </Routes>
     </Router>
+    </ConfigProvider>
   );
 };
 

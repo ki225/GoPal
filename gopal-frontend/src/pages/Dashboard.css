@@ -1,0 +1,464 @@
+/* 大地色系變量 - 豐富色彩層次 */
+:root {
+  --primary-brown: #8B6E4E;
+  --primary-brown-hover: #7B5E3E;
+  --light-brown: #C9AF98;
+  --beige: #F3E9DC;
+  --dark-beige: #E9D7C0;
+  --dark-green: #5C6D4E;
+  --olive: #A98B67;
+  --light-green: #A2B38B;
+  --sand: #DACDB0;
+  --dark-sand: #AD9F85;
+  --cream: #F8F3EA;
+  --terracotta: #C87556;
+  --accent-green: #3A5134;
+  --dark-text: #4A4131;
+  --light-text: #8A7A66;
+  --off-white: #FAF7F2;
+}
+
+/* 容器樣式 - 佔滿整個頁面 */
+.dashboard-container {
+  display: flex;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 地圖部分 - 佔滿整個容器 */
+.map-section {
+  flex-grow: 1;
+  height: 100%;
+  transition: width 0.3s ease;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 讓 MapView 的地圖容器佔滿高度 */
+.map-section > div {
+  height: 100% !important;
+}
+
+/* 篩選區域 - 懸浮在左側 */
+.filter-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 360px;
+  background-color: var(--beige);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 10;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  color: var(--dark-text);
+  display: flex;  /* 添加 flex 布局 */
+  flex-direction: column; 
+  background-image: linear-gradient(to bottom, var(--beige), var(--dark-beige));
+}
+
+.filter-content-scrollable {
+  flex: 1;  /* 自動填充可用空間 */
+  overflow-y: auto;  /* 區域內容可滑動 */
+  padding-right: 5px;  /* 為滑動條留出空間 */
+  margin-bottom: 10px;  /* 與底部按鈕保持距離 */
+}
+
+.filter-section.hidden {
+  transform: translateX(-100%);
+}
+
+.filter-section.visible {
+  transform: translateX(0);
+}
+
+/* 篩選頭部樣式 */
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--dark-sand);
+}
+
+.filter-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--primary-brown);
+  letter-spacing: 0.5px;
+}
+
+/* 關閉按鈕 */
+.close-filter {
+  color: var(--primary-brown) !important;
+}
+
+.close-filter:hover {
+  background-color: rgba(139, 110, 78, 0.1) !important;
+}
+
+/* 漂浮篩選按鈕 */
+.filter-toggle-floating {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 5;
+  background-color: var(--primary-brown) !important;
+  border-color: var(--primary-brown) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.filter-toggle-floating:hover {
+  background-color: var(--primary-brown-hover) !important;
+  border-color: var(--primary-brown-hover) !important;
+}
+
+/* 篩選項樣式 */
+.filter-item {
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.filter-item h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 12px;
+  color: var(--dark-text);
+  letter-spacing: 0.3px;
+}
+
+/* 開關項目樣式 */
+.switch-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 2px;
+  border-bottom: 1px dashed var(--sand);
+}
+
+.switch-item h4 {
+  margin-bottom: 0;
+}
+
+/* 時間和價格顯示 */
+.time-display, .price-display {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: var(--primary-brown);
+  font-weight: 500;
+}
+
+/* 滑塊標籤 */
+.slider-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  font-size: 13px;
+  color: var(--light-text);
+}
+
+/* 按鈕容器 */
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 30px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-sand);
+  position: relative; 
+  z-index: 2; 
+  margin-bottom: 20px; 
+}
+
+/* 固定底部按鈕 */
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-sand);
+  position: sticky;  /* 固定在容器底部 */
+  bottom: 0;  /* 底部對齊 */
+  background-color: var(--beige);  /* 確保背景色與面板一致 */
+  padding-bottom: 10px;  /* 底部內邊距 */
+  width: 100%;  /* 寬度填滿容器 */
+}
+
+/* 星期幾篩選樣式 */
+.open-days-container {
+  padding: 8px 0;
+}
+
+.earth-tone-checkbox-group {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.earth-tone-checkbox-group .ant-checkbox-wrapper {
+  margin-right: 0 !important;
+  margin-bottom: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--cream);
+  border-radius: 50%;
+  position: relative;
+}
+
+.earth-tone-checkbox-group .ant-checkbox-wrapper:hover {
+  background-color: var(--sand);
+}
+
+.earth-tone-checkbox-group .ant-checkbox-checked + span {
+  color: var(--primary-brown);
+  font-weight: bold;
+}
+
+.earth-tone-checkbox-group .ant-checkbox-inner {
+  border-color: var(--primary-brown);
+}
+
+.earth-tone-checkbox-group .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: var(--primary-brown);
+  border-color: var(--primary-brown);
+}
+
+/* 星期快捷按鈕 */
+.day-shortcuts {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.earth-tone-day-btn {
+  background-color: var(--cream) !important;
+  border-color: var(--dark-sand) !important;
+  color: var(--dark-text) !important;
+  padding: 0 12px;
+  height: 24px;
+  line-height: 22px;
+  font-size: 12px;
+}
+
+.earth-tone-day-btn:hover {
+  background-color: var(--sand) !important;
+  color: var(--primary-brown) !important;
+}
+
+.today-btn {
+  background-color: var(--light-brown) !important;
+  color: var(--dark-text) !important;
+  font-weight: 500;
+}
+
+/* === 大地色系主題 === */
+
+/* Collapse 組件 */
+.earth-tone-collapse {
+  background: transparent !important;
+}
+
+.earth-tone-collapse .ant-collapse-item {
+  border-bottom-color: var(--sand) !important;
+  margin-bottom: 10px;
+}
+
+.earth-tone-collapse .ant-collapse-header {
+  color: var(--primary-brown) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.3px;
+  font-size: 16px;
+}
+
+.earth-tone-collapse .ant-collapse-content {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 8px !important;
+  border-bottom: none !important;
+}
+
+/* Slider 組件 */
+.earth-tone-slider .ant-slider-track {
+  background-color: var(--primary-brown) !important;
+}
+
+.earth-tone-slider .ant-slider-handle {
+  border-color: var(--primary-brown) !important;
+}
+
+.earth-tone-slider .ant-slider-handle:focus {
+  box-shadow: 0 0 0 5px rgba(139, 110, 78, 0.2) !important;
+}
+
+.earth-tone-slider .ant-slider-dot-active {
+  border-color: var(--primary-brown) !important;
+}
+
+.earth-tone-slider .ant-slider-mark-text {
+  color: var(--primary-brown) !important;
+}
+
+/* Switch 組件 */
+.earth-tone-switch.ant-switch-checked {
+  background-color: var(--primary-brown) !important;
+}
+
+/* Radio 組件 */
+.earth-tone-radio .ant-radio-checked .ant-radio-inner {
+  border-color: var(--primary-brown) !important;
+}
+
+.earth-tone-radio .ant-radio-inner::after {
+  background-color: var(--primary-brown) !important;
+}
+
+.earth-tone-radio .ant-radio-wrapper span:last-child {
+  color: var(--dark-text);
+}
+
+.earth-tone-radio .ant-radio-wrapper-checked span:last-child {
+  color: var(--primary-brown);
+  font-weight: 500;
+}
+
+.earth-tone-checkbox .checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.earth-tone-checkbox .checkbox-item input[type="checkbox"] {
+  accent-color: var(--primary-brown);
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+}
+
+.earth-tone-checkbox .checkbox-item label {
+  color: var(--dark-text);
+}
+
+.earth-tone-btn {
+  border-color: var(--dark-sand) !important;
+  color: var(--primary-brown) !important;
+  background-color: var(--cream) !important;
+  border-radius: 6px !important;
+  font-weight: 500;
+}
+
+.earth-tone-btn:hover {
+  background-color: var(--sand) !important;
+}
+
+.earth-tone-btn.apply-btn {
+  background-color: var(--primary-brown) !important;
+  border-color: var(--primary-brown) !important;
+  color: white !important;
+}
+
+.earth-tone-btn.apply-btn:hover {
+  background-color: var(--primary-brown-hover) !important;
+  border-color: var(--primary-brown-hover) !important;
+}
+
+.filter-panel {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-section::-webkit-scrollbar-track {
+  background: var(--cream);
+  border-radius: 10px;
+}
+
+.filter-section::-webkit-scrollbar-thumb {
+  background-color: var(--dark-sand);
+  border-radius: 10px;
+}
+
+.filter-section::-webkit-scrollbar-thumb:hover {
+  background-color: var(--light-brown);
+}
+
+@media (max-width: 768px) {
+  .filter-section {
+    width: 85%;
+    max-width: 320px;
+  }
+  
+  .earth-tone-checkbox-group .ant-checkbox-wrapper {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+.filter-content-scrollable {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 5px;
+  margin-bottom: 10px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth; 
+}
+
+.filter-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 360px;
+  background-color: var(--beige);
+  background-image: linear-gradient(to bottom, var(--beige), var(--dark-beige));
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  z-index: 10;
+  transition: transform 0.3s ease;
+  color: var(--dark-text);
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--dark-sand);
+  background-color: var(--beige);
+  padding-bottom: 10px;
+  width: 100%;
+  z-index: 2;
+}
+
+.earth-tone-btn {
+  border-color: var(--dark-sand) !important;
+  color: var(--primary-brown) !important;
+  background-color: var(--cream) !important;
+  border-radius: 6px !important;
+  font-weight: 500;
+  min-width: 100px;
+  height: 36px;
+  line-height: 34px;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: block !important;
+}
