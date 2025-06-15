@@ -5,6 +5,7 @@ import CheckInList from '../components/CheckInList';
 import { CheckInData } from '../components/CheckInCard';
 import CreateCheckInModal from '../components/CreateCheckInModal';
 import './UserPage.css';
+import FriendList from '../components/FriendList';  // 引入好友列表組件
 
 const UserPage: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -106,6 +107,12 @@ const UserPage: React.FC = () => {
           打卡記錄
         </div>
         <div 
+          className={`tab ${currentTab === 'friends' ? 'active' : ''}`}
+          onClick={() => setCurrentTab('friends')}
+        >
+          好友列表
+        </div>
+        <div 
           className={`tab ${currentTab === 'favorites' ? 'active' : ''}`}
           onClick={() => setCurrentTab('favorites')}
         >
@@ -113,24 +120,43 @@ const UserPage: React.FC = () => {
         </div>
       </div>
       
-      <div className="checkins-container">
-        <div className="checkins-header">
-          <h2>我的打卡</h2>
-          <button 
-            className="create-post-button" 
-            onClick={() => setShowCreateModal(true)}
-          >
-            + 新增打卡
-          </button>
+      {/* 打卡記錄區塊 */}
+      {currentTab === 'posts' && (
+        <div className="checkins-container">
+          <div className="checkins-header">
+            <h2>我的打卡</h2>
+            <button 
+              className="create-post-button" 
+              onClick={() => setShowCreateModal(true)}
+            >
+              + 新增打卡
+            </button>
+          </div>
+          
+          <CheckInList 
+            checkins={checkins} 
+            onViewOnMap={handleViewOnMap}
+            isLoading={isLoading}
+            error={error || undefined}
+          />
         </div>
-        
-        <CheckInList 
-          checkins={checkins} 
-          onViewOnMap={handleViewOnMap}
-          isLoading={isLoading}
-          error={error || undefined}
+      )}
+      
+      {/* 好友列表區塊 */}
+      {currentTab === 'friends' && userId && (
+        <FriendList
+          userId={userId}
+          isVisible={currentTab === 'friends'}
         />
-      </div>
+      )}
+      
+      {/* 珍藏咖啡廳區塊 */}
+      {currentTab === 'favorites' && (
+        <div className="favorites-container">
+          <h2>我的珍藏咖啡廳</h2>
+          <p className="coming-soon">即將推出！敬請期待。</p>
+        </div>
+      )}
       
       {showCreateModal && userId && (
         <CreateCheckInModal 
