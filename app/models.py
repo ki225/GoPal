@@ -99,4 +99,16 @@ cafes = Table(
     Column("lat", Float, nullable=False),
     Column("lng", Float, nullable=False),
     Column("map_link", Text),
+    Column("open_time", String(5), default="09:00"),  # 開店時間 HH:MM
+    Column("close_time", String(5), default="21:00"),  # 關店時間 HH:MM
+    Column("open_days", JSON, default=["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]),  # 營業日
+    Column("price_range_min", Integer, default=0),  # 最低消費
+    Column("price_range_max", Integer, default=500),  # 最高消費
+    Column("lighting", Integer, default=3),  # 光線程度 1-5
+    Column("no_time_limit", Boolean, default=False),  # 是否不限時
+    Column("power_outlets", Integer, default=1),  # 插座數量 0-3
+    Column("noise_level", String(10), default="moderate"),  # 吵雜程度: quiet, moderate, noisy
+    Column("payment_methods", JSON, default=["electronic", "cash"]),  # 支付方式
+    Column("wifi_strength", String(10), default="strong"),  # WiFi強度: none, weak, strong
+    Column("has_toilet", Boolean, default=True),  # 是否有廁所
 )
