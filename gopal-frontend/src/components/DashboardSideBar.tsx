@@ -28,7 +28,7 @@ const DashboardSideBar: React.FC = () => {
       <div className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
         <div className="sidebar-header">
           <h3 className="sidebar-title">
-            <span className="title-text">Coffee Hub</span>
+            <span className="title-text">GoPal</span>
           </h3>
           
           {/* 裝飾性彩色點 */}
