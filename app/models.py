@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, String, MetaData, Date, Integer, Text, TIMESTAMP, Boolean, DateTime, JSON, Float, Enum, DateTime, ForeignKey
-from sqlalchemy.dialects.mysql import CHAR
+from sqlalchemy.dialects.mysql import CHAR, LONGBLOB
 from sqlalchemy.sql import func
 
 metadata = MetaData()
@@ -81,7 +81,11 @@ checkins = Table(
     Column("latitude", Float, nullable=False),
     Column("longitude", Float, nullable=False),
     Column("timestamp", DateTime, nullable=False, server_default=func.now()),
-    Column("visibility", Enum("public", "private"), default="public")
+    Column("visibility", Enum("public", "private"), default="public"),
+    Column("comment", Text, nullable=True),
+    Column("image_url", String(255), nullable=True),
+    Column("image_data", LONGBLOB, nullable=True),
+    Column("image_format", String(50), nullable=True)  
 )
 
 cafes = Table(

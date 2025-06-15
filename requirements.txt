@@ -9,3 +9,5 @@ aiomysql
 python-jose
 passlib
 python-dotenv
+aiofiles
+python-multipart

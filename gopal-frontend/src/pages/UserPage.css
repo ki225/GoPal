@@ -1,34 +1,29 @@
-/* Modern UserPage Styles */
+/* 咖啡主題用戶頁面樣式 */
 .user-page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 2rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-.user-page-container {
-  max-width: 1200px;
+  max-width: 900px;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 24px;
-  padding: 2.5rem;
-  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #5E3A1A;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-/* Profile Header Section */
+/* 個人資料頭部區塊 */
 .profile-header {
   display: flex;
   align-items: center;
   gap: 2rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #C19471 0%, #8B5A2B 100%);
   border-radius: 20px;
-  color: white;
+  color: #ECDFD3;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .profile-header::before {
@@ -39,28 +34,34 @@
   width: 200%;
   height: 200%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
-  animation: shimmer 3s ease-in-out infinite;
-}
-
-@keyframes shimmer {
-  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
-  50% { transform: translate(-50%, -50%) rotate(180deg); }
+  pointer-events: none;
 }
 
 .profile-avatar {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  object-fit: cover;
+  overflow: hidden;
+  background-color: #ECDFD3;
   border: 4px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   z-index: 1;
 }
 
-.profile-avatar:hover {
-  transform: scale(1.05);
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  color: #8B5A2B;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .profile-info {
@@ -69,255 +70,584 @@
   z-index: 1;
 }
 
-.profile-name {
-  font-size: 2.5rem;
+.profile-info h1 {
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin: 0 0 10px 0;
+  color: #ECDFD3;
 }
 
 .profile-bio {
-  font-size: 1.1rem;
-  opacity: 0.9;
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
-}
-
-.edit-profile-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 0.75rem 2rem;
-  border-radius: 50px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.edit-profile-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-/* Section Headers */
-.section-header {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  margin-top: 3rem;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  position: relative;
-}
-
-.section-header::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 60px;
-  height: 4px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 2px;
-}
-
-/* Map Section */
-.map-container {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  margin-bottom: 2rem;
-  transition: transform 0.3s ease;
-}
-
-.map-container:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
-}
-
-/* Friends Section */
-.friends-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.friend-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 16px;
-  text-align: center;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.friend-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-}
-
-.friend-avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 0 auto 1rem;
-  border: 3px solid #f0f0f0;
-  transition: border-color 0.3s ease;
-}
-
-.friend-card:hover .friend-avatar {
-  border-color: #667eea;
-}
-
-.friend-name {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
-}
-
-/* Check-in Posts Section */
-.checkin-posts {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.checkin-post {
-  background: white;
-  padding: 2rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.checkin-post::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.checkin-post:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
-}
-
-.checkin-location {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.checkin-location::before {
-  content: '📍';
-  font-size: 1.1rem;
-}
-
-.checkin-timestamp {
-  font-size: 0.9rem;
-  color: #666;
-  margin-bottom: 1rem;
-}
-
-.checkin-comment {
   font-size: 1rem;
-  line-height: 1.6;
-  color: #444;
-  margin-top: 1rem;
-  padding-left: 1rem;
-  border-left: 3px solid #f0f0f0;
+  line-height: 1.5;
+  margin: 0;
+  color: rgba(236, 223, 211, 0.9);
+  max-width: 600px;
 }
 
-/* Loading State */
-.loading {
+/* 標籤頁導航 */
+.profile-tabs {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 1.2rem;
-  color: #667eea;
+  border-bottom: 3px solid rgba(126, 91, 61, 0.2);
+  margin-bottom: 25px;
+  background-color: #F5EFE7;
+  border-radius: 12px 12px 0 0;
+  padding: 0 10px;
+}
+
+.tab {
+  padding: 15px 25px;
+  cursor: pointer;
+  color: #8B5A2B;
+  font-weight: 500;
+  font-size: 1.05rem;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  transition: all 0.3s ease;
+}
+
+.tab.active {
+  color: #5E3A1A;
+  border-bottom: 3px solid #C19471;
   font-weight: 600;
 }
 
-.loading::after {
-  content: '';
-  width: 20px;
-  height: 20px;
-  border: 2px solid #667eea;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  margin-left: 10px;
-  animation: spin 1s linear infinite;
+.tab:hover:not(.active) {
+  color: #744C24;
+  background-color: rgba(193, 148, 113, 0.1);
+  border-bottom: 3px solid rgba(193, 148, 113, 0.3);
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* 打卡記錄容器 */
+.checkins-container {
+  background-color: #F5EFE7;
+  padding: 25px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Responsive Design */
+.checkins-container h2 {
+  color: #5E3A1A;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border-left: 4px solid #C19471;
+  padding-left: 12px;
+}
+
+/* 加載和錯誤狀態 */
+.user-page.loading,
+.user-page.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  font-size: 1.2rem;
+  border-radius: 20px;
+  background: #ECDFD3;
+}
+
+.user-page.loading {
+  color: #8B5A2B;
+}
+
+.user-page.error {
+  color: #D87E65;
+}
+
+/* 用戶地圖區域 */
+.user-map-section {
+  margin-top: 30px;
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(193, 148, 113, 0.1);
+}
+
+.user-map-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #5E3A1A;
+  font-size: 1.2rem;
+}
+
+/* 響應式設計 */
 @media (max-width: 768px) {
-  .user-page {
-    padding: 1rem;
-  }
-  
-  .user-page-container {
-    padding: 1.5rem;
-    border-radius: 16px;
-  }
-  
   .profile-header {
     flex-direction: column;
     text-align: center;
-    gap: 1.5rem;
-  }
-  
-  .profile-name {
-    font-size: 2rem;
-  }
-  
-  .friends-grid {
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    padding: 1.5rem;
     gap: 1rem;
   }
+
+  .profile-bio {
+    max-width: 100%;
+  }
   
-  .section-header {
-    font-size: 1.5rem;
-    margin-top: 2rem;
+  .profile-tabs {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 5px;
+  }
+  
+  .tab {
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .checkins-container {
+    padding: 15px;
   }
 }
 
-@media (max-width: 480px) {
-  .profile-avatar {
-    width: 100px;
-    height: 100px;
+/* 裝飾性咖啡元素 */
+.coffee-icon {
+  position: absolute;
+  font-size: 3rem;
+  opacity: 0.1;
+  color: #ECDFD3;
+}
+
+.coffee-icon.top-right {
+  top: 20px;
+  right: 30px;
+}
+
+.coffee-icon.bottom-left {
+  bottom: 20px;
+  left: 30px;
+  transform: rotate(-15deg);
+}
+
+/* 打卡卡片特製的咖啡主題樣式 - 配合 CheckInCard 組件 */
+.checkin-card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border: 1px solid rgba(193, 148, 113, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(126, 91, 61, 0.15);
+}
+
+.checkin-header {
+  padding: 16px;
+  background-color: #F5EFE7;
+  border-bottom: 1px solid rgba(193, 148, 113, 0.1);
+}
+
+.checkin-header h3 {
+  margin: 0 0 8px 0;
+  color: #5E3A1A;
+  font-weight: 600;
+}
+
+.checkin-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.checkin-date {
+  font-size: 0.85rem;
+  color: #8B5A2B;
+  opacity: 0.7;
+}
+
+.visibility-badge {
+  background-color: rgba(193, 148, 113, 0.2);
+  color: #5E3A1A;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.checkin-image {
+  width: 100%;
+}
+
+.checkin-image img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  display: block;
+}
+
+.checkin-comment {
+  padding: 16px;
+  color: #5E3A1A;
+  line-height: 1.6;
+}
+
+.checkin-actions {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(193, 148, 113, 0.1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.map-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, #C19471, #8B5A2B);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.map-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(126, 91, 61, 0.3);
+}
+
+.checkins-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 創建打卡按鈕 */
+.create-post-button {
+  background: linear-gradient(135deg, #C19471, #8B5A2B);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.create-post-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(126, 91, 61, 0.3);
+}
+
+/* 創建發文容器 */
+.create-post-container {
+  background-color: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(193, 148, 113, 0.2);
+}
+
+.create-post-container h3 {
+  color: #5E3A1A;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+/* 表單樣式 */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  margin-bottom: 5px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #5E3A1A;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d0c0b0;
+  border-radius: 8px;
+  background-color: #fff;
+  font-size: 0.95rem;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* 地點選擇 */
+.location-section {
+  margin-bottom: 15px;
+}
+
+.location-picker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-location {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #F5EFE7;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(193, 148, 113, 0.3);
+}
+
+.pick-location-btn, .change-location-btn {
+  padding: 8px 12px;
+  background-color: #F5EFE7;
+  border: 1px solid #C19471;
+  color: #5E3A1A;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pick-location-btn:hover, .change-location-btn:hover {
+  background-color: #ECDFD3;
+}
+
+/* 地圖選擇器 */
+.location-map-container {
+  position: relative;
+  margin-top: 15px;
+  border: 1px solid #d0c0b0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  height: 400px;
+  display: flex;
+}
+
+.map-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(92, 58, 26, 0.8);
+  color: white;
+  padding: 8px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.map-header h4 {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.close-map-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.location-map {
+  flex: 2;
+  height: 100%;
+}
+
+.cafe-list {
+  flex: 1;
+  background: white;
+  border-left: 1px solid #d0c0b0;
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.cafe-list h4 {
+  margin-top: 0;
+  color: #5E3A1A;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.cafe-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cafe-list li {
+  padding: 10px;
+  border-bottom: 1px solid rgba(193, 148, 113, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cafe-list li:hover {
+  background-color: rgba(193, 148, 113, 0.1);
+}
+
+.cafe-list li.selected {
+  background-color: rgba(193, 148, 113, 0.2);
+  font-weight: 500;
+  color: #5E3A1A;
+}
+
+.loading-cafes {
+  text-align: center;
+  padding: 20px;
+  color: #8B5A2B;
+}
+
+/* 好友選擇 */
+.friends-section {
+  margin-bottom: 15px;
+}
+
+.friends-list {
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.friend-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.friend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #F5EFE7;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.friend-item:hover {
+  background-color: rgba(193, 148, 113, 0.2);
+}
+
+.friend-item.selected {
+  background-color: #C19471;
+  color: white;
+}
+
+.friend-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #8B5A2B;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.friend-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.loading-friends, .no-friends {
+  padding: 15px;
+  text-align: center;
+  color: #8B5A2B;
+  font-style: italic;
+}
+
+/* 可見性選項 */
+.visibility-options .radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+/* 發布按鈕 */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.cancel-btn {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid #8B5A2B;
+  color: #8B5A2B;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.submit-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #C19471, #8B5A2B);
+  border: none;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(126, 91, 61, 0.3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .location-map-container {
+    flex-direction: column;
+    height: 500px;
   }
   
-  .profile-name {
-    font-size: 1.8rem;
+  .location-map {
+    height: 300px;
   }
   
-  .friends-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  .cafe-list {
+    border-left: none;
+    border-top: 1px solid #d0c0b0;
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .form-actions button {
+    width: 100%;
   }
 }

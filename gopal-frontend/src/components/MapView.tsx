@@ -3,9 +3,18 @@ import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axiosInstance from "../axiosInstance";
 import ReviewModal from "./ReviewModal";
+import CheckInModal from '../components/CheckInModal';
+
+interface SelectedLocation {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+}
 
 interface MapViewProps {
   token: string;
+  userId: string;
   checkins?: {
     id: string;
     lat: number;
@@ -25,14 +34,25 @@ interface CafeData {
   map_link: string;
 }
 
-const MapView: React.FC<MapViewProps> = ({ token, checkins }) => {
+const MapView: React.FC<MapViewProps> = ({ token, userId, checkins }) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
   const cafeMarkersRef = useRef<mapboxgl.Marker[]>([]); 
   const [cafes, setCafes] = useState<CafeData[]>([]);
-  const [selectedLocation, setSelectedLocation] = useState<{ id: string; name: string } | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<SelectedLocation | null>(null);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
 
   mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
+
+  const handleMarkerClick = (marker: any) => {
+    setSelectedLocation({
+      id: marker.id,
+      lat: marker.lat,
+      lng: marker.lng,
+      name: marker.name
+    });
+    setShowCheckInModal(true);
+  };
 
   const loadCafes = async () => {
     const res = await axiosInstance.get("/cafes");
@@ -87,7 +107,12 @@ const MapView: React.FC<MapViewProps> = ({ token, checkins }) => {
           .addTo(mapRef.current!);
 
         marker.getElement().addEventListener("click", () => {
-          setSelectedLocation({ id: cafe.id.toString(), name: cafe.name });
+          handleMarkerClick({ 
+            id: cafe.id.toString(), 
+            name: cafe.name, 
+            lat: cafe.lat, 
+            lng: cafe.lng 
+          });
         });
 
         cafeMarkersRef.current.push(marker);
@@ -98,11 +123,20 @@ const MapView: React.FC<MapViewProps> = ({ token, checkins }) => {
   return (
     <div>
       <div ref={mapContainer} style={{ width: "100%", height: "500px" }} />
-      {selectedLocation && (
-        <ReviewModal
-          location={selectedLocation}
-          token={token}
-          onClose={() => setSelectedLocation(null)}
+      {showCheckInModal && selectedLocation && (
+        <CheckInModal
+          lat={selectedLocation.lat}
+          lng={selectedLocation.lng}
+          locationName={selectedLocation.name}
+          userId={userId} // 使用傳入的 userId
+          onClose={() => setShowCheckInModal(false)}
+          onSuccess={() => {
+            setShowCheckInModal(false);
+
+            if (!checkins) {
+              loadCafes(); 
+            }
+          }}
         />
       )}
     </div>

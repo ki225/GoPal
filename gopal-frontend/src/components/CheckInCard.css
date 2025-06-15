@@ -1,0 +1,87 @@
+.checkin-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(193, 148, 113, 0.2);
+}
+
+.checkin-header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(193, 148, 113, 0.1);
+}
+
+.checkin-header h3 {
+  margin: 0 0 8px 0;
+  color: #5E3A1A;
+  font-size: 1.2rem;
+}
+
+.checkin-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #8B5A2B;
+}
+
+.checkin-date {
+  opacity: 0.7;
+}
+
+.visibility-badge {
+  background-color: rgba(126, 91, 61, 0.1);
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  color: #5E3A1A;
+}
+
+.checkin-image {
+  width: 100%;
+  max-height: 300px;
+  overflow: hidden;
+}
+
+.checkin-image img {
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.checkin-comment {
+  padding: 16px;
+  font-size: 0.95rem;
+  color: #49403C;
+  line-height: 1.5;
+}
+
+.checkin-comment p {
+  margin: 0;
+}
+
+.checkin-actions {
+  padding: 12px 16px;
+  border-top: 1px solid rgba(193, 148, 113, 0.1);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.map-button {
+  background-color: transparent;
+  border: 1px solid #8B5A2B;
+  color: #8B5A2B;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.map-button:hover {
+  background-color: rgba(193, 148, 113, 0.1);
+}

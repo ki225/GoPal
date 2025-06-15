@@ -20,3 +20,11 @@ class UserLogin(BaseModel):
 
 class FriendRequest(BaseModel):
     target_user_id: str
+
+class CheckInCreate(BaseModel):
+    location_name: str
+    latitude: float
+    longitude: float
+    comment: Optional[str] = None
+    visibility: str = "public"
+    image_url: Optional[str] = None
