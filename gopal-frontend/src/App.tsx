@@ -1,4 +1,4 @@
-// src/App.tsx
+// src/App.tsx 總路由
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DashboardSideBar from "./components/DashboardSideBar";
 import UserPage  from "./pages/UserPage";
 import UserProfilePage from './pages/UserProfilePage';
+import Explore from './components/Explore';
 import { ConfigProvider } from 'antd';
 
 const App: React.FC = () => {
@@ -70,6 +71,7 @@ const App: React.FC = () => {
                 />
               }
             />
+            <Route path="explore" element={<Explore />} />
             <Route
               path="chat"
               element={

@@ -58,24 +58,44 @@ const DashboardSideBar: React.FC = () => {
               <span className="nav-label">首頁</span>
             </button>
           </li>
+
+          {/* 探索 */}
+          <li 
+            className={`nav-item ${isCollapsed ? 'collapsed-tooltip' : ''}`}
+            data-tooltip="探索"
+          >
+            <button 
+              className={`nav-button explore ${isActiveRoute("/explore") ? 'active' : ''}`}
+              onClick={() => navigate("/explore")}
+            >
+              <span className="nav-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+                </svg>
+              </span>
+              <span className="nav-label">探索</span>
+            </button>
+          </li>
           
           {/* 訊息 */}
           <li 
             className={`nav-item ${isCollapsed ? 'collapsed-tooltip' : ''}`}
-            data-tooltip="私訊"
+            data-tooltip="好友"
           >
             <button 
-              className={`nav-button chat ${isActiveRoute("/menu") ? 'active' : ''}`}
+              className={`nav-button friends ${isActiveRoute("/friends") ? 'active' : ''}`}
               onClick={() => navigate("/chat")}
             >
               <span className="nav-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"></path>
-                  <path d="M3 6h18"></path>
-                  <path d="M10 10a2 2 0 004 0"></path>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                 </svg>
               </span>
-              <span className="nav-label">好友列表</span>
+              <span className="nav-label">好友訊息</span>
             </button>
           </li>
           

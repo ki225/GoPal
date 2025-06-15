@@ -1,0 +1,205 @@
+body {
+  overflow-y: auto !important;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html, #root {
+  height: 100%;
+}
+
+.explore-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 20px 60px;
+  background-color: #faf5ef;
+  min-height: 100vh; 
+  height: auto;
+  overflow-y: visible; 
+  box-sizing: border-box; 
+}
+
+.explore-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #8B6E4E;
+  border-bottom: 2px solid #D9C9BA;
+  padding-bottom: 16px;
+}
+
+.explore-header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  color: #8B6E4E;
+}
+
+.explore-header p {
+  font-size: 1rem;
+  color: #AD9F85;
+  margin: 0;
+}
+
+.checkins-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.checkin-card {
+  border-radius: 8px;
+  /* overflow: hidden; */
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease;
+  background-color: #fff;
+  border: 1px solid #D9C9BA;
+}
+
+.checkin-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(139, 110, 78, 0.15);
+}
+
+.card-image-container {
+  height: 200px;
+  /* overflow: hidden; */
+}
+
+.checkin-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.checkin-card:hover .checkin-image {
+  transform: scale(1.05);
+}
+
+.card-image-placeholder {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #F3E9DC;
+  color: #AD9F85;
+  font-size: 1.2rem;
+}
+
+.checkin-card-content {
+  padding: 8px 0;
+}
+
+.checkin-location {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #8B6E4E;
+}
+
+.location-icon {
+  margin-right: 8px;
+  color: #8B6E4E;
+}
+
+.location-name {
+  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.checkin-comment {
+  margin-bottom: 12px;
+  color: #5C4D3B;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.checkin-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #AD9F85;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  border-top: 1px solid #F3E9DC;
+  padding-top: 10px;
+}
+
+.checkin-user {
+  display: flex;
+  align-items: center;
+}
+
+.user-id {
+  margin-left: 8px;
+  color: #8B6E4E;
+}
+
+.error-message {
+  text-align: center;
+  padding: 20px;
+  background-color: #FFF6F6;
+  border: 1px solid #FFD6D6;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  color: #FF6B6B;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 30px 0;
+  margin: 30px 0 50px;
+}
+
+.load-more {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.load-more button {
+  background-color: #8B6E4E;
+  border-color: #8B6E4E;
+  color: white;
+}
+
+.load-more button:hover {
+  background-color: #7A5F40;
+  border-color: #7A5F40;
+}
+
+.no-data {
+  margin: 40px 0;
+}
+
+.explore-content {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+/* 響應式樣式 */
+@media (max-width: 768px) {
+  .checkins-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .checkins-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .explore-header h1 {
+    font-size: 1.5rem;
+  }
+}
