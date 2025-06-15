@@ -1,0 +1,44 @@
+.checkin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+.checkin-loading {
+  text-align: center;
+  padding: 40px;
+  color: #8B5A2B;
+  font-style: italic;
+}
+
+.checkin-error {
+  text-align: center;
+  padding: 40px;
+  color: #e74c3c;
+}
+
+.no-checkins {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0;
+  color: #8B5A2B;
+  text-align: center;
+}
+
+.no-data-icon {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.no-checkins p {
+  margin: 5px 0;
+}
+
+.no-checkins .hint {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  max-width: 300px;
+}
