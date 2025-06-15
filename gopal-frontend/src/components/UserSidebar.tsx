@@ -21,9 +21,7 @@ const UserSidebar: React.FC<UserSidebarProps> = ({ userId, currentUserId, onClos
     const fetchUser = async () => {
       try {
         const res = await axiosInstance.get(`/users/${userId}`);
-        // console.log(res)
         setUserProfile(res.data);
-        // console.log(userProfile)
       } catch {
         setUserProfile(null);
       }

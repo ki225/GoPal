@@ -46,9 +46,6 @@ const CreateCheckInModal: React.FC<CreateCheckInModalProps> = ({ userId, onClose
   const [mapInitialized, setMapInitialized] = useState(false); 
   const [mapLoading, setMapLoading] = useState(false);
 
-  console.log("user id : ", userId);
-
-
   const fetchFriends = async () => {
         if (friendsLoadedRef.current || isLoadingFriends || friends.length > 0) return;
         
