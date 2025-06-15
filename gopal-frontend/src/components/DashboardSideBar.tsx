@@ -75,7 +75,7 @@ const DashboardSideBar: React.FC = () => {
                   <path d="M10 10a2 2 0 004 0"></path>
                 </svg>
               </span>
-              <span className="nav-label">菜單</span>
+              <span className="nav-label">好友列表</span>
             </button>
           </li>
           
