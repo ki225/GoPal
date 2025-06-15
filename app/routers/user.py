@@ -69,7 +69,7 @@ async def list_friends(current_user: UserProfile = Depends(get_current_user)):
             friend_ids.add(row["matched_user_id"])
 
     if not friend_ids:
-        return [] 
+        return []
 
     user_query = users.select().where(users.c.id.in_(list(friend_ids)))
     user_rows = await database.fetch_all(user_query)
@@ -153,7 +153,6 @@ async def add_friend(user_id: str, req: FriendRequest, current_user: dict = Depe
     )
     await database.execute(insert_query)
     return {"message": "好友已新增"}
-
 
 @router.post("/login")
 async def login(user: UserLogin):
@@ -243,3 +242,98 @@ async def show_my_checkins(user_id: str, current_user: Optional[UserProfile] = D
         }
         for row in results
     ]
+
+@router.get("/{user_id}/friends")
+async def get_friends(user_id: str, current_user: UserProfile = Depends(get_current_user)):
+    """獲取用戶的好友列表"""
+    
+    # 檢查是否有權限查看好友列表
+    if str(current_user.id) != user_id and not await is_admin(current_user.id):
+        raise HTTPException(status_code=403, detail="無權訪問此用戶的好友列表")
+    
+    match_query = """
+    SELECT user_id, matched_user_id 
+    FROM matches 
+    WHERE user_id = :user_id OR matched_user_id = :user_id
+    """
+    
+    match_rows = await database.fetch_all(
+        query=match_query,
+        values={"user_id": user_id}
+    )
+    
+    friend_ids = {
+        row["matched_user_id"] if row["user_id"] == user_id else row["user_id"]
+        for row in match_rows
+    }
+    
+    if not friend_ids:
+        return []
+    
+    user_query = """
+    SELECT id, name, avatar_url 
+    FROM users 
+    WHERE id IN :friend_ids
+    """
+    
+    friends = await database.fetch_all(
+        query=user_query,
+        values={"friend_ids": tuple(friend_ids) if len(friend_ids) > 1 else f"('{list(friend_ids)[0]}')" }
+    )
+    
+    return [
+        {
+            "id": friend["id"],
+            "name": friend["name"],
+            "avatar_url": friend["avatar_url"]
+        }
+        for friend in friends
+    ]
+
+# 添加刪除好友功能
+@router.delete("/{user_id}/friends/{friend_id}")
+async def remove_friend(
+    user_id: str, 
+    friend_id: str, 
+    current_user: UserProfile = Depends(get_current_user)
+):
+    """刪除好友關係"""
+    
+    # 驗證當前用戶
+    if str(current_user.id) != user_id:
+        raise HTTPException(status_code=403, detail="無權刪除此用戶的好友")
+    
+    # 檢查好友關係是否存在
+    check_query = """
+    SELECT match_id FROM matches 
+    WHERE (user_id = :user_id AND matched_user_id = :friend_id)
+       OR (user_id = :friend_id AND matched_user_id = :user_id)
+    """
+    
+    match = await database.fetch_one(
+        query=check_query,
+        values={
+            "user_id": user_id,
+            "friend_id": friend_id
+        }
+    )
+    
+    if not match:
+        raise HTTPException(status_code=404, detail="好友關係不存在")
+    
+    # 刪除好友關係
+    delete_query = """
+    DELETE FROM matches 
+    WHERE (user_id = :user_id AND matched_user_id = :friend_id)
+       OR (user_id = :friend_id AND matched_user_id = :user_id)
+    """
+    
+    await database.execute(
+        query=delete_query,
+        values={
+            "user_id": user_id,
+            "friend_id": friend_id
+        }
+    )
+    
+    return {"message": "好友已刪除"}
