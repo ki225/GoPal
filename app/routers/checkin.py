@@ -104,18 +104,20 @@ async def get_checkins(
     limit: int = 20,
     offset: int = 0
 ):
-    """獲取打卡列表"""
+    """獲取打卡列表，包含用戶名"""
     
     query = """
     SELECT 
-        id, user_id, location_name, latitude, longitude, timestamp, 
-        visibility, comment, 
-        CASE WHEN image_data IS NOT NULL THEN TRUE ELSE FALSE END as has_image
-    FROM checkins 
+        c.id, c.user_id, c.location_name, c.latitude, c.longitude, c.timestamp, 
+        c.visibility, c.comment, 
+        CASE WHEN c.image_data IS NOT NULL THEN TRUE ELSE FALSE END as has_image,
+        u.name  -- 添加用戶名
+    FROM checkins c
+    LEFT JOIN users u ON c.user_id = u.id  -- 關聯用戶表
     WHERE 
-        user_id = :user_id OR 
-        (visibility = 'public')
-    ORDER BY timestamp DESC
+        c.user_id = :user_id OR 
+        (c.visibility = 'public')
+    ORDER BY c.timestamp DESC
     LIMIT :limit OFFSET :offset
     """
     
@@ -139,7 +141,8 @@ async def get_checkins(
             "visibility": row.visibility,
             "comment": row.comment,
             "has_image": row.has_image,
-            "is_owner": row.user_id == current_user.id
+            "is_owner": row.user_id == current_user.id,
+            "username": row.name  
         }
         for row in results
     ]
