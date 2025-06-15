@@ -59,7 +59,7 @@ const FriendList: React.FC<FriendListProps> = ({ userId, isVisible }) => {
   
   // 刪除好友
   const handleRemoveFriend = async (friendId: string, event: React.MouseEvent) => {
-    event.stopPropagation(); // 避免觸發 handleFriendClick
+    event.stopPropagation();
     
     if (!window.confirm('確定要刪除這個好友嗎？')) return;
     
@@ -130,11 +130,23 @@ const FriendList: React.FC<FriendListProps> = ({ userId, isVisible }) => {
               className="friend-item"
               onClick={() => handleFriendClick(friend.id)}
             >
-              <div className="friend-avatar">
+              <div 
+                className="friend-avatar"
+                onClick={(e) => {
+                  e.stopPropagation(); // 防止觸發兩次導航
+                  handleFriendClick(friend.id);
+                }}
+                role="button"
+                aria-label={`查看${friend.name}的個人資料`}
+              >
                 {friend.avatar_url ? (
-                  <img src={friend.avatar_url} alt={friend.name} />
+                  <img 
+                    src={friend.avatar_url} 
+                    alt={friend.name} 
+                    className="clickable-avatar"
+                  />
                 ) : (
-                  <div className="avatar-placeholder">
+                  <div className="avatar-placeholder clickable-avatar">
                     {friend.name[0] || '?'}
                   </div>
                 )}
